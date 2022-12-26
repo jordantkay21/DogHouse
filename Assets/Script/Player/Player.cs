@@ -18,16 +18,16 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _anim = GetComponent<Animator>();
+        if (_anim == null)
+        {
+            Debug.LogError("Failed to connect the Animator");
+        }
+
         _controller = GetComponent<CharacterController>();
         if (_controller == null)
         {
             Debug.LogError("No Character Controller Present");
-        }
-
-        _anim = GetComponent<Animator>();
-        if (_controller == null)
-        {
-            Debug.LogError("Failed to connect the Animator");
         }
     }
 
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         }
         if (!_playerGrounded)
         {
-            velocity.y += -20f * Time.deltaTime;
+            velocity.y += -2000f * Time.deltaTime;
         }
 
         _controller.Move(velocity * Time.deltaTime);
