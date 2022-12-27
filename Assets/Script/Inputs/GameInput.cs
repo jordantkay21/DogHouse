@@ -20,6 +20,18 @@ public class GameInput : MonoBehaviour
         _input.Dog.Enable();
         _input.Dog.Movement.performed += Movement_performed;
         _input.Dog.Movement.canceled += Movement_canceled;
+        _input.Dog.Running.performed += Running_performed;
+        _input.Dog.Running.canceled += Running_canceled;
+    }
+
+    private void Running_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        _player.SetMovementAnimation(.85f);
+    }
+
+    private void Running_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        _player.SetMovementAnimation(1f);
     }
 
     private void Movement_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)

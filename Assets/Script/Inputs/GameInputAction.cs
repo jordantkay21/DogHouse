@@ -35,6 +35,24 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Running"",
+                    ""type"": ""Button"",
+                    ""id"": ""b4f6a6d5-d0f3-4905-bc75-313288ea9690"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""31bcc653-7ccc-4384-a151-940c4d66ea26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +110,28 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e88f0bb1-df24-4fc4-b4e2-920259521445"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Running"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95430ec3-6a16-4e7c-849d-9eaffb17ca1d"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +141,8 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
         // Dog
         m_Dog = asset.FindActionMap("Dog", throwIfNotFound: true);
         m_Dog_Movement = m_Dog.FindAction("Movement", throwIfNotFound: true);
+        m_Dog_Running = m_Dog.FindAction("Running", throwIfNotFound: true);
+        m_Dog_Jump = m_Dog.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,11 +203,15 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Dog;
     private IDogActions m_DogActionsCallbackInterface;
     private readonly InputAction m_Dog_Movement;
+    private readonly InputAction m_Dog_Running;
+    private readonly InputAction m_Dog_Jump;
     public struct DogActions
     {
         private @GameInputAction m_Wrapper;
         public DogActions(@GameInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Dog_Movement;
+        public InputAction @Running => m_Wrapper.m_Dog_Running;
+        public InputAction @Jump => m_Wrapper.m_Dog_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Dog; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -178,6 +224,12 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_DogActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_DogActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_DogActionsCallbackInterface.OnMovement;
+                @Running.started -= m_Wrapper.m_DogActionsCallbackInterface.OnRunning;
+                @Running.performed -= m_Wrapper.m_DogActionsCallbackInterface.OnRunning;
+                @Running.canceled -= m_Wrapper.m_DogActionsCallbackInterface.OnRunning;
+                @Jump.started -= m_Wrapper.m_DogActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_DogActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_DogActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_DogActionsCallbackInterface = instance;
             if (instance != null)
@@ -185,6 +237,12 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @Running.started += instance.OnRunning;
+                @Running.performed += instance.OnRunning;
+                @Running.canceled += instance.OnRunning;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -192,5 +250,7 @@ public partial class @GameInputAction : IInputActionCollection2, IDisposable
     public interface IDogActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnRunning(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

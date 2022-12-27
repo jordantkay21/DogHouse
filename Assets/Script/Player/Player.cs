@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed;
 
+
     private Vector2 _movement;
     private bool _playerGrounded;
 
@@ -48,9 +49,9 @@ public class Player : MonoBehaviour
     {
         _movement = move;
     }
-    public void SetMovementAnimation(float anim_speed)
+    public void SetMovementAnimation(float animSpeed)
     {
-        _animSpeed = anim_speed;
+        _animSpeed = animSpeed;
     }
 
     private void Movement()
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
         float v = _movement.y;
 
         transform.Rotate(transform.up, h);
+
 
         Vector3 direction = transform.forward * v;
         Vector3 velocity = direction * _speed;
