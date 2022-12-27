@@ -11,9 +11,12 @@ public class Player : MonoBehaviour
     private bool _playerGrounded;
 
     private CharacterController _controller;
+    [SerializeField]
     private Animator _anim;
+    private float _animSpeed;
 
     #endregion
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,14 +24,16 @@ public class Player : MonoBehaviour
         _anim = GetComponent<Animator>();
         if (_anim == null)
         {
-            Debug.LogError("Failed to connect the Animator");
+            Debug.LogError(gameObject.name + " Failed to connect the Animator");
         }
 
         _controller = GetComponent<CharacterController>();
         if (_controller == null)
         {
-            Debug.LogError("No Character Controller Present");
+            Debug.LogError(gameObject.name + " No Character Controller Present");
         }
+
+        _animSpeed = 0f;
     }
 
     // Update is called once per frame
@@ -43,6 +48,10 @@ public class Player : MonoBehaviour
     {
         _movement = move;
     }
+    public void SetMovementAnimation(float anim_speed)
+    {
+        _animSpeed = anim_speed;
+    }
 
     private void Movement()
     {
@@ -55,7 +64,7 @@ public class Player : MonoBehaviour
         Vector3 direction = transform.forward * v;
         Vector3 velocity = direction * _speed;
 
-        _anim.SetFloat("Speed", Mathf.Abs(velocity.magnitude));
+        _anim.SetFloat("Speed_f", _animSpeed);
 
         if (_playerGrounded)
         {
