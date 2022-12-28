@@ -7,12 +7,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed;
 
+    [SerializeField]
+    private int _bonesCollected;
 
     private Vector2 _movement;
     private bool _playerGrounded;
 
     private CharacterController _controller;
-    [SerializeField]
     private Animator _anim;
     private float _animSpeed;
 
@@ -79,5 +80,14 @@ public class Player : MonoBehaviour
 
         _controller.Move(velocity * Time.deltaTime);
     }
+    #endregion
+
+    #region Bones
+
+    public void CollectedBone(int boneValue)
+    {
+        _bonesCollected += boneValue;
+    }
+
     #endregion
 }
