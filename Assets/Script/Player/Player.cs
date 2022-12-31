@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     private CharacterController _controller;
     private Animator _anim;
     private float _animSpeed;
+    private UIManager _uiManager;
+    private GameManager _gameManager;
 
     #endregion
 
@@ -23,6 +25,18 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (_gameManager == null)
+        {
+            Debug.LogError(gameObject.name + " Failed to Connect to GameManager");
+        }
+
+        _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        if (_uiManager == null)
+        {
+            Debug.LogError(gameObject.name + " Failed to connect to UIManager");
+        }
+
         _anim = GetComponent<Animator>();
         if (_anim == null)
         {
@@ -42,7 +56,17 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
+        UICommunication();
     }
+
+    #region Script Communication
+    private void UICommunication()
+    {
+        AddBone();
+    }
+
+
+    #endregion
 
     #region Movement
 
@@ -88,6 +112,13 @@ public class Player : MonoBehaviour
     {
         _bonesCollected += boneValue;
     }
+    private void AddBone()
+    {
+        _uiManager.UpdateCollectedBones(_bonesCollected);
+        _gameManager.UpdateCollectedBones(_bonesCollected);
+    }
+
+
 
     #endregion
 }

@@ -7,7 +7,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> _availableBones = new List<GameObject>();
-
+    [SerializeField]
+    private List<GameObject> _destPointList = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,12 @@ public class SpawnManager : MonoBehaviour
             _availableBones[random].SetActive(true);
             _availableBones.RemoveAt(random);
         }
+    }
+
+    public void ActivateDestPoint()
+    {
+        int random = Random.Range(0, _destPointList.Count - 1);
+        _destPointList[random].SetActive(true);
     }
 
 }
